@@ -38,7 +38,7 @@ function setup() {
 }
 
 function draw() {
-  // background("white");
+  background("white");
   // console.log(
   //   deltaE(
   //     [colorOne._getRed(), colorOne._getGreen(), colorOne._getBlue()],
