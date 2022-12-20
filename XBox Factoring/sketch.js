@@ -1,5 +1,5 @@
 // things to fix
-// sometimes aTimesC of trinomial will be 0. It shouldn't be.
+// sometimes aTimesC of trinomial will be 0. It shouldn't be
 
 let acInput, bInput, leftInput, rightInput;
 let topLeftInput, topRightInput, botLeftInput, botRightInput;
