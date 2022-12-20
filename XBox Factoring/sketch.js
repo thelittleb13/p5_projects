@@ -1,8 +1,6 @@
 // things to fix
 // sometimes aTimesC of trinomial will be 0. It shouldn't be.
 
-// HELLOHELLOHELLO
-
 let acInput, bInput, leftInput, rightInput;
 let topLeftInput, topRightInput, botLeftInput, botRightInput;
 let firstLeftTermInput, secondLeftTermInput, firstTopTermInput, secondTopTermInput;
