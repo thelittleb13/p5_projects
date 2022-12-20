@@ -1,3 +1,5 @@
+//hello
+
 function setup() {
   createCanvas(650, 550);
   overflow("hidden");
