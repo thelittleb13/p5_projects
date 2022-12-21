@@ -1,5 +1,5 @@
 // things to fix
-// sometimes aTimesC of trinomial will be 0. It shouldn't be
+// sometimes aTimesC of trinomial.js will be 0. It shouldn't be
 
 let acInput, bInput, leftInput, rightInput;
 let topLeftInput, topRightInput, botLeftInput, botRightInput;
@@ -46,8 +46,7 @@ function setup() {
   secondTopTermInput = createInput("2nd");
   secondTopTermInput.hide();
 
-  overflow("hidden");
-  writeTeX();
+  overflow("hidden"); // idk what this does
 
   myTrinomial = new Trinomial();
   myTrinomial.getRandomABC();
@@ -57,27 +56,10 @@ function draw() {
   background(220);
 
   drawXBox();
-  drawEquation();
+  // drawEquation();
   drawInputs();
-}
-
-function writeTeX() {
-  var a = 5;
-  var b = 10;
-  var name = "2/3x";
-  console.log(`Fifteen is ${a + b}.`);
-  let equation = createTeX(`{\\frac{${a}}{${b}}}`);
-
-  equation.position(20, 175);
-  equation.size(48);
-  equation.stroke(color("rgb(135, 206, 235)"));
-  equation.fill(color("rgb(135, 206, 235)"));
-
-  equation.play("spinOut", 0, 2.5);
-
-  for (var i of "word") {
-    console.log(i);
-  }
+  myTrinomial.drawTrinomial();
+  // noLoop();
 }
 
 function drawXBox() {
