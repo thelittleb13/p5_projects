@@ -1,10 +1,11 @@
 class Trinomial {
     constructor() {
-        this.aTimesC = floor(random(1, 50));
-        this.allFactorsOfATimesC;
         this.a;
         this.b;
         this.c;
+        this.aTimesC = floor(random(-50, 50));
+        this.allFactorsOfATimesC;
+        this.color = color("black");
     }
 
     getRandomABC() {
@@ -32,5 +33,33 @@ class Trinomial {
         console.log(this.aTimesC);
         console.log(this.a, this.b, this.c);
         // console.log(allFactors);
+    }
+
+    drawTrinomial() {
+        // console.log(`Fifteen`);
+        let absValOfB = this.b;
+        let absValOfC = this.c;
+        let firstSign = "+";
+        let secondSign = "+";
+
+        if (this.b < 0) { // if b or c are < 0, take abs value and change the relevant sign so that it appears correct in latex.
+            absValOfB *= -1;
+            firstSign = "-";
+        }
+        if (this.c < 0) {
+            absValOfC *= -1;
+            secondSign = "-";
+        }
+
+        let equation = createTeX(`${this.a}x^2${firstSign}${absValOfB}x${secondSign}${absValOfC}`);
+
+
+        equation.position(width * 2.5 / 11, height * 1 / 11);
+        equation.size(48);
+        // equation.size(50, 10);
+        equation.stroke(color(`rgb(${this.color._getRed()}, ${this.color._getGreen()}, ${this.color._getBlue()})`));
+        equation.fill(color(`rgb(${this.color._getRed()}, ${this.color._getGreen()}, ${this.color._getBlue()})`));
+
+        equation.play("spinOut", 0, 2.5);
     }
 }
