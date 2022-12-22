@@ -4,9 +4,14 @@
 let acInput, bInput, leftInput, rightInput;
 let topLeftInput, topRightInput, botLeftInput, botRightInput;
 let firstLeftTermInput, secondLeftTermInput, firstTopTermInput, secondTopTermInput;
+let yesButton,
+  yesButtonWidth = 100;
+let screenArray = ["drawFirstScreen", "drawSecondScreen"],
+  screenIndex = 0,
+  currentScreen;
 
 function setup() {
-  myCanvas = createCanvas(600, 400);
+  myCanvas = createCanvas(1000, 600);
   // myCanvas.setID("canvas");
   // myCanvas.position(50, 50);
 
@@ -46,20 +51,139 @@ function setup() {
   secondTopTermInput = createInput("2nd");
   secondTopTermInput.hide();
 
+  yesButton = createButton();
+  yesButton.hide();
+  yesButtonColor = color(25, 23, 200, 50);
+
   overflow("hidden"); // idk what this does
 
   myTrinomial = new Trinomial();
   myTrinomial.getRandomABC();
+  myTrinomial.drawTrinomial();
+
 }
 
 function draw() {
   background(220);
 
+  currentScreen = screenArray[screenIndex];
+  drawCurrentScreen(currentScreen);
+
+  displayMousePosition()
+}
+
+function drawCurrentScreen() {
+  if (currentScreen == "drawFirstScreen") drawFirstScreen();
+  if (currentScreen == "drawSecondScreen") drawSecondScreen();
+}
+
+function drawFirstScreen() {
+  // drawInputs();
+  // console.log("hi");
+
+  push();
+
+  // hideAllButtonsAndInputs();
+
+  fill("white");
+  stroke("black");
+  strokeWeight(2);
+
+  rect(
+    0,
+    height / 4,
+    width - 1,
+    height * 3 / 4 - 1
+  );
+
+  textSize(60);
+  strokeWeight(1);
+  fill("black");
+  textWrap(WORD);
+  textAlign(CENTER);
+  text(
+    "Hey! \n We're going to factor the trinomial above using the XBOX method. First, let's label our a, b, and c values.",
+    0,
+    height / 4,
+    width - 1,
+    height * 3 / 4 - 1
+  );
+
+  pop();
+
+  yesButton.size(yesButtonWidth, 50);
+  yesButton.position(width / 2 - yesButtonWidth / 2, height - 75);
+  yesButton.style("background-color", yesButtonColor);
+  yesButton.style("font-size", "24px");
+  yesButton.html("OK!");
+  yesButton.mousePressed(incrementScreen);
+  yesButton.mouseOver(darkenButton);
+  yesButton.mouseOut(lightenButton);
+  yesButton.show();
+
+}
+
+function drawSecondScreen() {
   drawXBox();
-  // drawEquation();
-  drawInputs();
-  myTrinomial.drawTrinomial();
-  // noLoop();
+  // console.log("hi");
+
+  push();
+
+  // hideAllButtonsAndInputs();
+  myTrinomial.drawCirclesAndArrowsToABC();
+
+  fill("white");
+  stroke("black");
+  strokeWeight(2);
+
+  rect(
+    0,
+    height / 4,
+    width - 1,
+    height * 3 / 4 - 1
+  );
+
+  textSize(60);
+  strokeWeight(1);
+  fill("black");
+  textWrap(WORD);
+  textAlign(CENTER);
+  text(
+    "Here are our a, b, and c values. Notice how we did NOT include the variables! Let's now start to fill out our X.",
+    0,
+    height / 4,
+    width - 1,
+    height * 3 / 4 - 1
+  );
+
+  pop();
+
+  yesButton.size(yesButtonWidth, 50);
+  yesButton.position(width * 1 / 2 - yesButtonWidth / 2, height - 75);
+  yesButton.style("background-color", yesButtonColor);
+  yesButton.style("font-size", "24px");
+  yesButton.html("OK!");
+  yesButton.mousePressed(incrementScreen);
+  yesButton.mouseOver(darkenButton);
+  yesButton.mouseOut(lightenButton);
+  yesButton.show();
+}
+
+function incrementScreen() {
+  // hideAllButtonsAndInputs();
+  // if (currentScreen == "Right Term Adding Screen") incrementStep();
+  // if (currentScreen == "Operation Input Screen") screenIndex--;
+  // else screenIndex++;
+
+  screenIndex++;
+}
+
+function darkenButton() {
+  yesButtonColor = color(25, 23, 200, 75);
+}
+
+function lightenButton() {
+  yesButtonColor = color(25, 23, 200, 50);
 }
 
 function drawXBox() {
@@ -165,6 +289,19 @@ function drawInputs() {
   secondTopTermInput.style("font-size", "20px");
   secondTopTermInput.size(width * .5 / 11, height * .3 / 6);
   secondTopTermInput.show();
+
+  pop();
+}
+
+function displayMousePosition() {
+  push();
+
+  textFont("menlo");
+  textSize(14);
+  noStroke();
+  text("x:" + mouseX, 25, 15);
+  text("y:" + mouseY, 100, 15);
+  stroke("black"); // reset stroke
 
   pop();
 }
