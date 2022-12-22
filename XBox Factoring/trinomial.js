@@ -12,6 +12,7 @@ class Trinomial {
         // looping through 1 to num
         this.allFactorsOfATimesC = [];
         var randomPairOfFactors = [];
+        if (this.aTimesC == 0) this.aTimesC = 12;
         for (var i = 1; i <= abs(this.aTimesC); i++) {
             let factor1;
             let factor2;
@@ -53,13 +54,108 @@ class Trinomial {
 
         let equation = createTeX(`${this.a}x^2${firstSign}${absValOfB}x${secondSign}${absValOfC}`);
 
-
-        equation.position(width * 2.5 / 11, height * 1 / 11);
+        equation.position(width * 4 / 11, height * 1 / 11);
         equation.size(48);
         // equation.size(50, 10);
         equation.stroke(color(`rgb(${this.color._getRed()}, ${this.color._getGreen()}, ${this.color._getBlue()})`));
         equation.fill(color(`rgb(${this.color._getRed()}, ${this.color._getGreen()}, ${this.color._getBlue()})`));
-
+        // console.log(equation.position());
+        equation.style("z-index", "2");
         equation.play("spinOut", 0, 2.5);
+    }
+
+    drawCirclesAndArrowsToABC(aBoolean, bBoolean, cBoolean) {
+        push();
+
+        var numDigitsOfA = 1;
+        var numDigitsOfB = 1;
+        var numDigitsOfC = 1;
+        var aAdjustment = 0;
+        var bAdjustment = 0;
+        var cAdjustment = 0;
+        var widthOfOneCharacter = 25;
+
+        aAdjustment += this.countDigits(this.a) * widthOfOneCharacter - widthOfOneCharacter;
+        bAdjustment += this.countDigits(this.b) * widthOfOneCharacter - widthOfOneCharacter;
+        cAdjustment += this.countDigits(this.c) * widthOfOneCharacter - widthOfOneCharacter;
+
+        noFill();
+        strokeWeight(3);
+        stroke("red");
+        if (aBoolean === true) rect(width * 4 / 11 - 2, height * 1.1 / 11, 28 + aAdjustment, 50); // around a value
+        if (bBoolean === true) rect(width * 4.8 / 11 + aAdjustment, height * 1.1 / 11, 90 + bAdjustment, 50); // around b value
+        if (cBoolean === true) rect(width * 6.1 / 11 + aAdjustment + bAdjustment, height * 1.1 / 11, 90 + cAdjustment, 50); // around c value
+
+        let aBase = createVector(315, 35);
+        let aVector = createVector(45, 20);
+        let bBase = createVector(400 + aAdjustment, 35);
+        let bVector = createVector(45, 20);
+        let cBase = createVector(510 + aAdjustment + bAdjustment, 35);
+        let cVector = createVector(45, 20);
+
+        if (aBoolean === true) this.drawArrow(aBase, aVector, 'red'); // arrow to a
+        if (bBoolean === true) this.drawArrow(bBase, bVector, 'red'); // arrow to b
+        if (cBoolean === true) this.drawArrow(cBase, cVector, 'red'); // arrow to c
+
+        stroke("red");
+        strokeWeight(1);
+        fill("red");
+        textSize(30);
+        textAlign(RIGHT);
+        if (aBoolean === true) text("a", aBase.x - 5, 35);
+        if (bBoolean === true) text("b", bBase.x - 5, 35);
+        if (cBoolean === true) text("c", cBase.x - 5, 35);
+
+        pop();
+    }
+
+    countDigits(num) {
+        var numberOfDigits = 0;
+        if (abs(num) >= 0 && abs(num) <= 9) numberOfDigits = 1; // eg 1, 3, 7
+        if (abs(num) >= 10 && abs(num) <= 99) numberOfDigits = 2; // eg 11, 26, 99
+        if (abs(num) >= 100 && abs(num) <= 999) numberOfDigits = 3; // eg 102, 345, 999
+        if (abs(num) >= 1000 && abs(num) <= 9999) numberOfDigits = 4; // eg 1000, 5540, 9999
+        return numberOfDigits;
+    }
+
+    // draw() {
+    // let v0 = createVector(50, 50);
+
+    // let v1 = createVector(50, 0);
+    // drawArrow(v0, v1, 'red');
+
+    //     let v2 = createVector(mouseX - 50, mouseY - 50);
+    //     drawArrow(v0, v2, 'blue');
+
+    //     let angleBetween = v1.angleBetween(v2);
+    //     noStroke();
+    //     text(
+    //         'angle between: ' +
+    //         angleBetween.toFixed(2) +
+    //         ' radians or ' +
+    //         degrees(angleBetween).toFixed(2) +
+    //         ' degrees',
+    //         10,
+    //         50,
+    //         90,
+    //         50
+    //     );
+    // }
+
+    // draw an arrow for a vector at a given base position
+    drawArrow(base, vec, myColor) {
+        push();
+
+        stroke(myColor);
+        strokeWeight(3);
+        fill(myColor);
+        translate(base.x, base.y);
+        line(0, 0, vec.x, vec.y);
+        rotate(vec.heading());
+        let arrowSize = 7;
+        translate(vec.mag() - arrowSize, 0);
+        triangle(0, arrowSize / 2, 0, -arrowSize / 2, arrowSize, 0);
+
+        pop();
     }
 }
