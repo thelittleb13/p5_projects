@@ -1,4 +1,4 @@
-// things to fix
+// things to fix hello
 // sometimes aTimesC of trinomial.js will be 0. It shouldn't be
 
 let acInput, bInput, leftInput, rightInput;
