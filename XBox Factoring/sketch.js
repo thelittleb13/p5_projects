@@ -4,9 +4,10 @@
 let acInput, bInput, leftInput, rightInput;
 let topLeftInput, topRightInput, botLeftInput, botRightInput;
 let firstLeftTermInput, secondLeftTermInput, firstTopTermInput, secondTopTermInput;
+let bInputValue = 11, bInputColor = "rgb(0, 0, 0, .3)", acInputValue = 13, acInputColor = "rgb(0, 0, 0, .3)", leftInputValue, leftInputColor = "rgb(0, 0, 0, .3)";
 let yesButton,
   yesButtonWidth = 100;
-let screenArray = ["drawFirstScreen", "drawSecondScreen"],
+let screenArray = ["drawFirstScreen", "drawSecondScreen", "drawThirdScreen", "drawFourthScreen", "drawFifthScreen"],
   screenIndex = 0,
   currentScreen;
 
@@ -15,7 +16,7 @@ function setup() {
   // myCanvas.setID("canvas");
   // myCanvas.position(50, 50);
 
-  acInput = createInput("a * c");
+  acInput = createInput("a⋅c");
   acInput.hide();
 
   bInput = createInput("b");
@@ -75,6 +76,9 @@ function draw() {
 function drawCurrentScreen() {
   if (currentScreen == "drawFirstScreen") drawFirstScreen();
   if (currentScreen == "drawSecondScreen") drawSecondScreen();
+  if (currentScreen == "drawThirdScreen") drawThirdScreen();
+  if (currentScreen == "drawFourthScreen") drawFourthScreen();
+  if (currentScreen == "drawFifthScreen") drawFifthScreen();
 }
 
 function drawFirstScreen() {
@@ -124,13 +128,11 @@ function drawFirstScreen() {
 }
 
 function drawSecondScreen() {
-  drawXBox();
-  // console.log("hi");
-
   push();
 
-  // hideAllButtonsAndInputs();
-  myTrinomial.drawCirclesAndArrowsToABC();
+  hideAllButtonsAndInputs();
+  drawXBox();
+  myTrinomial.drawCirclesAndArrowsToABC(true, true, true);
 
   fill("white");
   stroke("black");
@@ -169,6 +171,179 @@ function drawSecondScreen() {
   yesButton.show();
 }
 
+function drawThirdScreen() {
+  push();
+
+  hideAllButtonsAndInputs();
+
+  drawXBox();
+  myTrinomial.drawCirclesAndArrowsToABC(true, true, true);
+
+  fill("white");
+  stroke("black");
+  strokeWeight(2);
+
+  rect(
+    width / 2,
+    height / 4,
+    width / 2 - 1,
+    height * 3 / 4 - 1
+  );
+
+  textSize(45);
+  strokeWeight(1);
+  fill("black");
+  textWrap(WORD);
+  textAlign(CENTER);
+  text(
+    "On the left you see our X. Start by typing in the b-value above into the bottom of the X. Then Press ENTER.",
+    width / 2,
+    height / 4,
+    width / 2 - 1,
+    height * 3 / 4 - 1
+  );
+
+  bInput.position(width * 2.6 / 11, height * 4 / 6); //b input
+  bInput.style("font-size", "40px");
+  bInput.style("color", bInputColor);
+  bInput.mousePressed(clearBInput);
+  // bInput.mouseOver(clearBInput);
+  // bInput.mouseOut(unclearBInput);
+  bInput.size(70, 90);
+  bInput.show();
+
+  pop();
+}
+
+function drawFourthScreen() {
+  push();
+
+  hideAllButtonsAndInputs();
+
+  drawXBox();
+  myTrinomial.drawCirclesAndArrowsToABC(true, true, true);
+
+  fill("white");
+  stroke("black");
+  strokeWeight(2);
+
+  rect(
+    width / 2,
+    height / 4,
+    width / 2 - 1,
+    height * 3 / 4 - 1
+  );
+
+  textSize(45);
+  strokeWeight(1);
+  fill("black");
+  textWrap(WORD);
+  textAlign(CENTER);
+  text(
+    "Now let's fill in the top of the X. Multiply the a and c values and type that product into the top of the X. Then press ENTER.",
+    width / 2,
+    height / 4,
+    width / 2 - 1,
+    height * 3 / 4 - 1
+  );
+
+  textSize(80);
+  text(bInputValue, width * 2.95 / 11, height * 4.7 / 6);
+
+  acInput.position(width * 2.6 / 11, height * 2 / 6); //ac input
+  acInput.style("font-size", "40px");
+  acInput.style("color", acInputColor);
+  acInput.mousePressed(clearACInput);
+  // acInput.mouseOver(clearacInput);
+  // acInput.mouseOut(unclearacInput);
+  acInput.size(70, 90);
+  acInput.show();
+
+  pop();
+}
+
+function drawFifthScreen() {
+  push();
+
+  hideAllButtonsAndInputs();
+
+  drawXBox();
+  myTrinomial.drawCirclesAndArrowsToABC(true, true, true);
+
+  fill("white");
+  stroke("black");
+  strokeWeight(2);
+
+  rect(
+    width / 2,
+    height / 4,
+    width / 2 - 1,
+    height * 3 / 4 - 1
+  );
+
+  textSize(35);
+  strokeWeight(1);
+  fill("black");
+  textWrap(WORD);
+  textAlign(CENTER);
+  text(
+    `Now we need to think! The two numbers that go into the two remaining areas in the X need to add up to ${bInputValue} and multiply to ${acInputValue}. Once you figure out those two numbers, type them into the two boxes in any order and press ENTER.`,
+    width / 2,
+    height / 4,
+    width / 2 - 1,
+    height * 3 / 4 - 1
+  );
+
+  leftInput.position(width * 2.6 / 11, height * 2 / 6); //ac input
+  leftInput.style("font-size", "40px");
+  leftInput.style("color", leftInputColor);
+  leftInput.mousePressed(clearLeftInput);
+  // leftInput.mouseOver(clearLeftInput);
+  // leftInput.mouseOut(unclearLeftInput);
+  leftInput.size(70, 90);
+  // leftInput.show();
+
+  textSize(80);
+  text(bInputValue, width * 2.95 / 11, height * 4.7 / 6); // show b value
+  textSize(80);
+  text(acInputValue, width * 2.95 / 11, height * 2.7 / 6); // show a*c value
+
+  pop();
+}
+
+function clearBInput() {
+  if (bInput.value() == "b") {
+    bInput.value("");
+    bInputColor = "rgb(0, 0, 0)"
+  }
+}
+
+function unclearBInput() {
+  if (bInput.value() == "") bInput.value("b");
+}
+
+function clearACInput() {
+  if (acInput.value() == "a⋅c") {
+    acInput.value("");
+    acInputColor = "rgb(0, 0, 0)"
+  }
+}
+
+function unclearACInput() {
+  if (acInput.value() == "") acInput.value("a⋅c");
+}
+
+function clearLeftInput() {
+  if (leftInput.value() == "") {
+    leftInput.value("");
+    leftInput = "rgb(0, 0, 0)"
+  }
+}
+
+function unclearLeftInput() {
+  if (leftInput.value() == "") leftInput.value("");
+}
+
 function incrementScreen() {
   // hideAllButtonsAndInputs();
   // if (currentScreen == "Right Term Adding Screen") incrementStep();
@@ -176,6 +351,48 @@ function incrementScreen() {
   // else screenIndex++;
 
   screenIndex++;
+}
+
+function keyPressed() {
+  if (
+    currentScreen == "drawThirdScreen" && keyCode === ENTER && bInput.value() != ""
+  ) {
+    bInputValue = parseInt(bInput.value());
+    bInput.value("");
+    incrementScreen();
+  }
+
+  if (
+    currentScreen == "drawFourthScreen" && keyCode === ENTER && acInput.value() != ""
+  ) {
+    acInputValue = parseInt(acInput.value());
+    acInput.value("");
+    incrementScreen();
+  }
+  // if (currentScreen == "Operation Input Screen") {
+  //   if (keyCode === 13 && operationInput.value() != "") {
+  //     if (isAddButtonClicked || isSubButtonClicked) addOrSubToBothSides();
+  //     else if (isDivButtonClicked == true) divToBothSides();
+  //     else if (isMultButtonClicked == true) multToBothSides();
+  //     incrementScreen();
+  //   }
+  // }
+}
+
+function hideAllButtonsAndInputs() {
+  acInput.hide();
+  bInput.hide();
+  leftInput.hide();
+  rightInput.hide();
+  topLeftInput.hide();
+  topRightInput.hide();
+  botLeftInput.hide();
+  botRightInput.hide();
+  firstLeftTermInput.hide();
+  secondLeftTermInput.hide();
+  firstTopTermInput.hide();
+  secondTopTermInput.hide();
+  yesButton.hide();
 }
 
 function darkenButton() {

@@ -3,7 +3,7 @@ class Trinomial {
         this.a;
         this.b;
         this.c;
-        this.aTimesC = floor(random(1, 50));
+        this.aTimesC = floor(random(-50, 50));
         this.allFactorsOfATimesC;
         this.color = color("black");
     }
@@ -64,32 +64,65 @@ class Trinomial {
         equation.play("spinOut", 0, 2.5);
     }
 
-    drawCirclesAndArrowsToABC() {
+    drawCirclesAndArrowsToABC(aBoolean, bBoolean, cBoolean) {
         push();
 
         var numDigitsOfA = 1;
         var numDigitsOfB = 1;
         var numDigitsOfC = 1;
+        var aAdjustment = 0;
+        var bAdjustment = 0;
+        var cAdjustment = 0;
+        var widthOfOneCharacter = 25;
 
-        if (abs(this.))
+        aAdjustment += this.countDigits(this.a) * widthOfOneCharacter - widthOfOneCharacter;
+        bAdjustment += this.countDigits(this.b) * widthOfOneCharacter - widthOfOneCharacter;
+        cAdjustment += this.countDigits(this.c) * widthOfOneCharacter - widthOfOneCharacter;
 
-            noFill();
+        noFill();
         strokeWeight(3);
         stroke("red");
-        if (this.a >= 10) xAdjustment += 40;
-        rect(width * 4 / 11 - 2, height * 1.1 / 11, 28 + xAdjustment, 50); // around a value
+        if (aBoolean === true) rect(width * 4 / 11 - 2, height * 1.1 / 11, 28 + aAdjustment, 50); // around a value
+        if (bBoolean === true) rect(width * 4.8 / 11 + aAdjustment, height * 1.1 / 11, 90 + bAdjustment, 50); // around b value
+        if (cBoolean === true) rect(width * 6.1 / 11 + aAdjustment + bAdjustment, height * 1.1 / 11, 90 + cAdjustment, 50); // around c value
 
-        rect(width * 4.8 / 11 + xAdjustment, height * 1.1 / 11, 90 + xAdjustment, 50); // around b value
-        // ellipse(width * 4.15 / 11, height * 1.5 / 11, 30 + xAdjustment, 40); // around c value
+        let aBase = createVector(315, 35);
+        let aVector = createVector(45, 20);
+        let bBase = createVector(400 + aAdjustment, 35);
+        let bVector = createVector(45, 20);
+        let cBase = createVector(510 + aAdjustment + bAdjustment, 35);
+        let cVector = createVector(45, 20);
+
+        if (aBoolean === true) this.drawArrow(aBase, aVector, 'red'); // arrow to a
+        if (bBoolean === true) this.drawArrow(bBase, bVector, 'red'); // arrow to b
+        if (cBoolean === true) this.drawArrow(cBase, cVector, 'red'); // arrow to c
+
+        stroke("red");
+        strokeWeight(1);
+        fill("red");
+        textSize(30);
+        textAlign(RIGHT);
+        if (aBoolean === true) text("a", aBase.x - 5, 35);
+        if (bBoolean === true) text("b", bBase.x - 5, 35);
+        if (cBoolean === true) text("c", cBase.x - 5, 35);
 
         pop();
     }
 
-    // draw() {
-    //     let v0 = createVector(50, 50);
+    countDigits(num) {
+        var numberOfDigits = 0;
+        if (abs(num) >= 0 && abs(num) <= 9) numberOfDigits = 1; // eg 1, 3, 7
+        if (abs(num) >= 10 && abs(num) <= 99) numberOfDigits = 2; // eg 11, 26, 99
+        if (abs(num) >= 100 && abs(num) <= 999) numberOfDigits = 3; // eg 102, 345, 999
+        if (abs(num) >= 1000 && abs(num) <= 9999) numberOfDigits = 4; // eg 1000, 5540, 9999
+        return numberOfDigits;
+    }
 
-    //     let v1 = createVector(50, 0);
-    //     drawArrow(v0, v1, 'red');
+    // draw() {
+    // let v0 = createVector(50, 50);
+
+    // let v1 = createVector(50, 0);
+    // drawArrow(v0, v1, 'red');
 
     //     let v2 = createVector(mouseX - 50, mouseY - 50);
     //     drawArrow(v0, v2, 'blue');
@@ -112,6 +145,7 @@ class Trinomial {
     // draw an arrow for a vector at a given base position
     drawArrow(base, vec, myColor) {
         push();
+
         stroke(myColor);
         strokeWeight(3);
         fill(myColor);
@@ -121,6 +155,7 @@ class Trinomial {
         let arrowSize = 7;
         translate(vec.mag() - arrowSize, 0);
         triangle(0, arrowSize / 2, 0, -arrowSize / 2, arrowSize, 0);
+
         pop();
     }
 }
