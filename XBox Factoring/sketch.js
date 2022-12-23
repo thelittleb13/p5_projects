@@ -1,15 +1,21 @@
 // things to fix
 // sometimes aTimesC of trinomial.js will be 0. It shouldn't be
+// TODO: Back button
 
 let acInput, bInput, leftInput, rightInput;
 let topLeftInput, topRightInput, botLeftInput, botRightInput;
 let firstLeftTermInput, secondLeftTermInput, firstTopTermInput, secondTopTermInput;
-let bInputValue = 11, bInputColor = "rgb(0, 0, 0, .3)", acInputValue = 13, acInputColor = "rgb(0, 0, 0, .3)", leftInputValue, leftInputColor = "rgb(0, 0, 0, .3)";
+let bInputValue = 11, bInputColor = "rgb(0, 0, 0, .3)", acInputValue = 13, acInputColor = "rgb(0, 0, 0, .3)", leftInputValue = 1, leftInputColor = "rgb(0, 0, 0, 1)", rightInputValue = 2, rightInputColor = "rgb(0, 0, 0, 1)";
 let yesButton,
   yesButtonWidth = 100;
-let screenArray = ["drawFirstScreen", "drawSecondScreen", "drawThirdScreen", "drawFourthScreen", "drawFifthScreen"],
-  screenIndex = 0,
+let screenArray = ["drawFirstScreen", "drawSecondScreen", "drawThirdScreen", "drawFourthScreen", "drawFifthScreen", "drawSixthScreen"],
+  screenIndex = 5,
   currentScreen;
+let arrow;
+
+function preload() {
+  arrow = loadImage('arrow.png');
+}
 
 function setup() {
   myCanvas = createCanvas(1000, 600);
@@ -22,13 +28,13 @@ function setup() {
   bInput = createInput("b");
   bInput.hide();
 
-  leftInput = createInput("l");
+  leftInput = createInput("");
   leftInput.hide();
 
-  rightInput = createInput("r");
+  rightInput = createInput("");
   rightInput.hide();
 
-  topLeftInput = createInput("TL");
+  topLeftInput = createInput("");
   topLeftInput.hide();
 
   topRightInput = createInput("TR");
@@ -79,6 +85,7 @@ function drawCurrentScreen() {
   if (currentScreen == "drawThirdScreen") drawThirdScreen();
   if (currentScreen == "drawFourthScreen") drawFourthScreen();
   if (currentScreen == "drawFifthScreen") drawFifthScreen();
+  if (currentScreen == "drawSixthScreen") drawSixthScreen();
 }
 
 function drawFirstScreen() {
@@ -203,7 +210,7 @@ function drawThirdScreen() {
     height * 3 / 4 - 1
   );
 
-  bInput.position(width * 2.6 / 11, height * 4 / 6); //b input
+  bInput.position(width * 2.6 / 11, height * 3.5 / 6); //b input
   bInput.style("font-size", "40px");
   bInput.style("color", bInputColor);
   bInput.mousePressed(clearBInput);
@@ -250,7 +257,7 @@ function drawFourthScreen() {
   textSize(80);
   text(bInputValue, width * 2.95 / 11, height * 4.7 / 6);
 
-  acInput.position(width * 2.6 / 11, height * 2 / 6); //ac input
+  acInput.position(width * 2.6 / 11, height * 1.5 / 6); //ac input
   acInput.style("font-size", "40px");
   acInput.style("color", acInputColor);
   acInput.mousePressed(clearACInput);
@@ -286,7 +293,7 @@ function drawFifthScreen() {
   fill("black");
   textWrap(WORD);
   textAlign(CENTER);
-  text(
+  text( // TODO: make it so that add and multiply are red/underlined? Maybe I can use that drawText function i found somewhere online?
     `Now we need to think! The two numbers that go into the two remaining areas in the X need to add up to ${bInputValue} and multiply to ${acInputValue}. Once you figure out those two numbers, type them into the two boxes in any order and press ENTER.`,
     width / 2,
     height / 4,
@@ -294,19 +301,86 @@ function drawFifthScreen() {
     height * 3 / 4 - 1
   );
 
-  leftInput.position(width * 2.6 / 11, height * 2 / 6); //ac input
+  leftInput.position(width * 1 / 11, height * 2.5 / 6); //left input
   leftInput.style("font-size", "40px");
   leftInput.style("color", leftInputColor);
   leftInput.mousePressed(clearLeftInput);
   // leftInput.mouseOver(clearLeftInput);
   // leftInput.mouseOut(unclearLeftInput);
   leftInput.size(70, 90);
-  // leftInput.show();
+  leftInput.show();
+
+  rightInput.position(width * 4 / 11, height * 2.5 / 6); //right input
+  rightInput.style("font-size", "40px");
+  rightInput.style("color", rightInputColor);
+  rightInput.mousePressed(clearRightInput);
+  // rightInput.mouseOver(clearRightInput);
+  // rightInput.mouseOut(unclearRightInput);
+  rightInput.size(70, 90);
+  rightInput.show();
+
+  drawTypedValues(true, true, false, false);
+
+  pop();
+}
+
+function drawSixthScreen() {
+  push();
+
+  hideAllButtonsAndInputs();
+
+  drawXBox();
+  // myTrinomial.drawCirclesAndArrowsToABC(true, true, true);
+
+  fill("white");
+  stroke("black");
+  strokeWeight(2);
+
+  rect(
+    0,
+    height * 8.5 / 11,
+    width - 1,
+    height * 2.5 / 11 - 1
+  );
+
+  textSize(30);
+  strokeWeight(1);
+  fill("black");
+  textWrap(WORD);
+  textAlign(CENTER);
+  text(
+    `We finished our X! On to the empty box on the right. The x-squared term from your polynomial goes in the first space. Type it in, then press ENTER. (Note: Use ^ for exponents. e.g. 1x^2)`,
+    0,
+    height * 8.5 / 11,
+    width - 1,
+    height * 2.5 / 11 - 1
+  );
+
+  drawTypedValues(true, true, true, true);
+
+  topLeftInput.position(width * 6.025 / 11, height * 1.5 / 6 + 2); //Top Left input
+  topLeftInput.style("font-size", "40px");
+  topLeftInput.size(width * 1.89 / 11, height * 1.4 / 6);
+  // topLeftInput.style("z-index", "0");
+  topLeftInput.show();
+
+  text("hello", 550, 230);
+  image(arrow, 550, 200);
+  arrow.id("background-color");
+
+  pop();
+}
+
+function drawTypedValues(bBoolean, acBoolean, leftBoolean, rightBoolean) {
+  push();
 
   textSize(80);
-  text(bInputValue, width * 2.95 / 11, height * 4.7 / 6); // show b value
-  textSize(80);
-  text(acInputValue, width * 2.95 / 11, height * 2.7 / 6); // show a*c value
+  if (bBoolean) text(bInputValue, width * 2.95 / 11, height * 4.3 / 6); // show b value
+  if (acBoolean) text(acInputValue, width * 2.95 / 11, height * 2.2 / 6); // show a*c value
+  if (leftBoolean) text(leftInputValue, width * 1.5 / 11, height * 3.3 / 6); // show left value
+  if (rightBoolean) text(rightInputValue, width * 4.5 / 11, height * 3.3 / 6); // show right value
+
+  // TODO: add if statements for typed values in the BOX.
 
   pop();
 }
@@ -334,14 +408,25 @@ function unclearACInput() {
 }
 
 function clearLeftInput() {
-  if (leftInput.value() == "") {
+  if (leftInput.value() == "l") {
     leftInput.value("");
-    leftInput = "rgb(0, 0, 0)"
+    leftInputColor = "rgb(0, 0, 0)"
   }
 }
 
 function unclearLeftInput() {
   if (leftInput.value() == "") leftInput.value("");
+}
+
+function clearRightInput() {
+  if (rightInput.value() == "r") {
+    rightInput.value("");
+    rightInputColor = "rgb(0, 0, 0)"
+  }
+}
+
+function unclearRightInput() {
+  if (rightInput.value() == "") rightInput.value("");
 }
 
 function incrementScreen() {
@@ -369,6 +454,17 @@ function keyPressed() {
     acInput.value("");
     incrementScreen();
   }
+
+  if ( // TODO: Fix the > -100 to something better and more universal
+    currentScreen == "drawFifthScreen" && keyCode === ENTER && parseInt(leftInput.value()) > -100 && parseInt(rightInput.value()) > -100
+  ) {
+    leftInputValue = parseInt(leftInput.value());
+    rightInputValue = parseInt(rightInput.value());
+    leftInput.value("");
+    rightInput.value("");
+    incrementScreen();
+  }
+
   // if (currentScreen == "Operation Input Screen") {
   //   if (keyCode === 13 && operationInput.value() != "") {
   //     if (isAddButtonClicked || isSubButtonClicked) addOrSubToBothSides();
@@ -408,16 +504,23 @@ function drawXBox() {
 
   strokeWeight(3);
 
-  line(width * 1 / 11, height * 2 / 6, width * 5 / 11, height * 5 / 6); // first diag
-  line(width * 1 / 11, height * 5 / 6, width * 5 / 11, height * 2 / 6); // second diag
+  line(width * 1 / 11, height * 1.5 / 6, width * 5 / 11, height * 4.5 / 6); // first diag
+  line(width * 1 / 11, height * 4.5 / 6, width * 5 / 11, height * 1.5 / 6); // second diag
 
 
-  line(width * 6 / 11, height * 2 / 6, width * 6 / 11, height * 5 / 6); // left vert
-  line(width * 8 / 11, height / 3, width * 8 / 11, height * 5 / 6); // mid vert
-  line(width * 10 / 11, height / 3, width * 10 / 11, height * 5 / 6); // right vert
-  line(width * 6 / 11, height * 2 / 6, width * 10 / 11, height * 2 / 6); // top horiz
-  line(width * 6 / 11, height * 3.5 / 6, width * 10 / 11, height * 3.5 / 6); // mid horiz
-  line(width * 6 / 11, height * 5 / 6, width * 10 / 11, height * 5 / 6); // bot horiz
+  line(width * 6 / 11, height * 1.5 / 6, width * 6 / 11, height * 4.5 / 6); // left vert
+  line(width * 8 / 11, height * 1.5 / 6, width * 8 / 11, height * 4.5 / 6); // mid vert
+  line(width * 10 / 11, height * 1.5 / 6, width * 10 / 11, height * 4.5 / 6); // right vert
+  line(width * 6 / 11, height * 1.5 / 6, width * 10 / 11, height * 1.5 / 6); // top horiz
+  line(width * 6 / 11, height * 3.0 / 6, width * 10 / 11, height * 3.0 / 6); // mid horiz
+  line(width * 6 / 11, height * 4.5 / 6, width * 10 / 11, height * 4.5 / 6); // bot horiz
+
+  // line(width * 6 / 11, height * 2 / 6, width * 6 / 11, height * 5 / 6); // left vert
+  // line(width * 8 / 11, height / 3, width * 8 / 11, height * 5 / 6); // mid vert
+  // line(width * 10 / 11, height / 3, width * 10 / 11, height * 5 / 6); // right vert
+  // line(width * 6 / 11, height * 2 / 6, width * 10 / 11, height * 2 / 6); // top horiz
+  // line(width * 6 / 11, height * 3.5 / 6, width * 10 / 11, height * 3.5 / 6); // mid horiz
+  // line(width * 6 / 11, height * 5 / 6, width * 10 / 11, height * 5 / 6); // bot horiz
 
   pop();
 }

@@ -64,7 +64,7 @@ class Trinomial {
         equation.play("spinOut", 0, 2.5);
     }
 
-    drawCirclesAndArrowsToABC(aBoolean, bBoolean, cBoolean) {
+    drawCirclesAndArrowsToABC(aBoolean, bBoolean, cBoolean) { // booleans determines if a, b, and c have arrows drawn to them, respectively
         push();
 
         var numDigitsOfA = 1;
