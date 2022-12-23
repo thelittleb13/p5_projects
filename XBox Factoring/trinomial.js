@@ -61,10 +61,10 @@ class Trinomial {
         equation.fill(color(`rgb(${this.color._getRed()}, ${this.color._getGreen()}, ${this.color._getBlue()})`));
         // console.log(equation.position());
         equation.style("z-index", "2");
-        equation.play("spinOut", 0, 2.5);
+        equation.add();
     }
 
-    drawCirclesAndArrowsToABC(aBoolean, bBoolean, cBoolean) { // booleans determines if a, b, and c have arrows drawn to them, respectively
+    drawCirclesAndArrowsToABCAndMoreLOL(aBoolean, bBoolean, cBoolean, aBoolean2, cBoolean2) { // booleans determines if a, b, and c have arrows drawn to them, respectively
         push();
 
         var numDigitsOfA = 1;
@@ -84,7 +84,10 @@ class Trinomial {
         stroke("red");
         if (aBoolean === true) rect(width * 4 / 11 - 2, height * 1.1 / 11, 28 + aAdjustment, 50); // around a value
         if (bBoolean === true) rect(width * 4.8 / 11 + aAdjustment, height * 1.1 / 11, 90 + bAdjustment, 50); // around b value
-        if (cBoolean === true) rect(width * 6.1 / 11 + aAdjustment + bAdjustment, height * 1.1 / 11, 90 + cAdjustment, 50); // around c value
+        if (cBoolean === true || cBoolean2 === true) rect(width * 6.1 / 11 + aAdjustment + bAdjustment, height * 1.1 / 11, 90 + cAdjustment, 50); // around c value
+        if (aBoolean2 === true) {
+            rect(width * 4 / 11 - 2, height * 0.9 / 11, width * .3 / 11 + aAdjustment + 50, height * 1 / 11);
+        }
 
         let aBase = createVector(315, 35);
         let aVector = createVector(45, 20);
@@ -96,6 +99,21 @@ class Trinomial {
         if (aBoolean === true) this.drawArrow(aBase, aVector, 'red'); // arrow to a
         if (bBoolean === true) this.drawArrow(bBase, bVector, 'red'); // arrow to b
         if (cBoolean === true) this.drawArrow(cBase, cVector, 'red'); // arrow to c
+
+        if (aBoolean2 === true) {
+            aBase.x += width * .85 / 11 + aAdjustment + 50;
+            aBase.y += height * 1.3 / 11;
+            aVector.x = (width * 6.23 / 11) - aBase.x - 4;
+            aVector.y = height * 3.23 / 11 - aBase.y - 4;
+            // console.log(aBase.x);
+            // console.log((width * 6.23 / 11));
+
+            this.drawArrow(aBase, aVector, 'red');
+
+            noFill();
+            stroke("red");
+            rect(width * 6.23 / 11, height * 3.23 / 11, width * 1.55 / 11, height * 1.77 / 11);
+        }
 
         stroke("red");
         strokeWeight(1);
