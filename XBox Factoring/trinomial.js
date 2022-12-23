@@ -1,3 +1,5 @@
+// TODO: store positions of rectangles globally and use vectors to determine locations of a, b, and c letters so that it can change dynamically
+
 class Trinomial {
     constructor() {
         this.a;
@@ -89,7 +91,7 @@ class Trinomial {
             rect(width * 4 / 11 - 2, height * 0.9 / 11, width * .3 / 11 + aAdjustment + 50, height * 1 / 11);
         }
 
-        let aBase = createVector(315, 35);
+        let aBase = createVector(width * 3.3 / 11, 35);
         let aVector = createVector(45, 20);
         let bBase = createVector(400 + aAdjustment, 35);
         let bVector = createVector(45, 20);

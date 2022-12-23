@@ -10,7 +10,7 @@ let yesButton,
   yesButtonWidth = 100;
 let xSquared;
 let screenArray = ["drawFirstScreen", "drawSecondScreen", "drawThirdScreen", "drawFourthScreen", "drawFifthScreen", "drawSixthScreen", "drawSeventhScreen"],
-  screenIndex = 6,
+  screenIndex = 0,
   currentScreen;
 
 function setup() {
