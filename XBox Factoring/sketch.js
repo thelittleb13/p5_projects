@@ -1,16 +1,18 @@
 // things to fix
 // sometimes aTimesC of trinomial.js will be 0. It shouldn't be
 // TODO: Back button
+// TODO: The typed values change location from screens 2 and 3. Fix that
 
 let acInput, bInput, leftInput, rightInput;
 let topLeftInput, topRightInput, botLeftInput, botRightInput;
 let firstLeftTermInput, secondLeftTermInput, firstTopTermInput, secondTopTermInput;
-let bInputValue = 11, bInputColor = "rgb(0, 0, 0, .3)", acInputValue = 13, acInputColor = "rgb(0, 0, 0, .3)", leftInputValue = 1, leftInputColor = "rgb(0, 0, 0, 1)", rightInputValue = 2, rightInputColor = "rgb(0, 0, 0, 1)", topLeftInputValue, topRightInputValue, botLeftInputValue, botRightInputValue;
+let bInputValue = 11, bInputColor = "rgb(0, 0, 0, .3)", acInputValue = 13, acInputColor = "rgb(0, 0, 0, .3)", leftInputValue = 99, leftInputColor = "rgb(0, 0, 0, .3)", rightInputValue = 99, rightInputColor = "rgb(0, 0, 0, .3)", topLeftInputValue, topRightInputValue, botLeftInputValue, botRightInputValue;
 let yesButton,
-  yesButtonWidth = 100;
-let xSquared;
-let screenArray = ["drawFirstScreen", "drawSecondScreen", "drawThirdScreen", "drawFourthScreen", "drawFifthScreen", "drawSixthScreen", "drawSeventhScreen"],
-  screenIndex = 0,
+  yesButtonWidth = 100, yesButtonColor;
+let backButton, backButtonColor;
+let xSquared, x1, x2;
+let screenArray = ["drawFirstScreen", "drawSecondScreen", "drawThirdScreen", "drawFourthScreen", "drawFifthScreen", "drawSixthScreen", "drawSeventhScreen", "drawEighthScreen"],
+  screenIndex = 4,
   currentScreen;
 
 function setup() {
@@ -33,13 +35,13 @@ function setup() {
   topLeftInput = createInput("");
   topLeftInput.hide();
 
-  topRightInput = createInput("TR");
+  topRightInput = createInput("");
   topRightInput.hide();
 
-  botLeftInput = createInput("BL");
+  botLeftInput = createInput("");
   botLeftInput.hide();
 
-  botRightInput = createInput("BR");
+  botRightInput = createInput("");
   botRightInput.hide();
 
   firstLeftTermInput = createInput("1st");
@@ -55,15 +57,29 @@ function setup() {
   secondTopTermInput.hide();
 
   yesButton = createButton();
-  yesButton.hide();
   yesButtonColor = color(25, 23, 200, 50);
+  yesButton.hide();
+
+  backButton = createButton("Back");
+  backButtonColor = color(25, 23, 200, 50);
+  backButton.size(yesButtonWidth, 30);
+  backButton.position(width / 11 - yesButtonWidth / 2, height * .5 / 11);
+  backButton.style("background-color", backButtonColor);
+  backButton.style("font-size", "18px");
+  backButton.mousePressed(decrementScreen);
+  backButton.mouseOver(darkenBackButton);
+  backButton.mouseOut(lightenBackButton);
+  backButton.hide();
+
+  xSquared = createTeX(`x^2`);
+  x1 = createTeX(`x`);
+  x2 = createTeX(`x`);
 
   overflow("hidden"); // idk what this does
 
   myTrinomial = new Trinomial();
   myTrinomial.getRandomABC();
   myTrinomial.drawTrinomial();
-
 }
 
 function draw() {
@@ -72,7 +88,12 @@ function draw() {
   currentScreen = screenArray[screenIndex];
   drawCurrentScreen(currentScreen);
 
-  displayMousePosition()
+  backButton.style("background-color", backButtonColor);
+
+  backButton.hide();
+  if (currentScreen != "drawFirstScreen") backButton.show();
+
+  displayMousePosition();
 }
 
 function drawCurrentScreen() {
@@ -83,6 +104,7 @@ function drawCurrentScreen() {
   if (currentScreen == "drawFifthScreen") drawFifthScreen();
   if (currentScreen == "drawSixthScreen") drawSixthScreen();
   if (currentScreen == "drawSeventhScreen") drawSeventhScreen();
+  if (currentScreen == "drawEighthScreen") drawEighthScreen();
 }
 
 function drawFirstScreen() {
@@ -128,7 +150,6 @@ function drawFirstScreen() {
   yesButton.mouseOver(darkenButton);
   yesButton.mouseOut(lightenButton);
   yesButton.show();
-
 }
 
 function drawSecondScreen() {
@@ -272,7 +293,7 @@ function drawFifthScreen() {
   hideAllButtonsAndInputs();
 
   drawXBox();
-  myTrinomial.drawCirclesAndArrowsToABCAndMoreLOL(true, true, true);
+  // myTrinomial.drawCirclesAndArrowsToABCAndMoreLOL(true, true, true);
 
   fill("white");
   stroke("black");
@@ -291,7 +312,7 @@ function drawFifthScreen() {
   textWrap(WORD);
   textAlign(CENTER);
   text( // TODO: make it so that add and multiply are red/underlined? Maybe I can use that drawText function i found somewhere online?
-    `Now we need to think! The two numbers that go into the two remaining areas in the X need to add up to ${bInputValue} and multiply to ${acInputValue}. Once you figure out those two numbers, type them into the two boxes in any order and press ENTER.`,
+    `Now we need to think! The two numbers that go into the two remaining areas in the X need to add up to ${bInputValue} and multiply to ${acInputValue}. Once you figure out what those two numbers are, type them into the two boxes in any order and press ENTER.`,
     width / 2,
     height / 4,
     width / 2 - 1,
@@ -316,7 +337,12 @@ function drawFifthScreen() {
   rightInput.size(70, 90);
   rightInput.show();
 
+  drawLittlePlusAndMultSign();
   drawTypedValues(true, true, false, false);
+
+  // TODO: Make an addition and multiplication equation underneath the X that update as you type in numbers into the things and so you can play around with numbers to figure out which ones it is. Also I should change the border colors of each of the inputs to match where that value is going to show up in the two equations. 
+
+  text(leftInput.value(), width * 2 / 11)
 
   pop();
 }
@@ -372,53 +398,136 @@ function drawSeventhScreen() {
 
   hideAllButtonsAndInputs();
 
-  // drawXBox();
-  // // myTrinomial.drawCirclesAndArrowsToABC(true, true, true);
+  drawXBox();
+  // myTrinomial.drawCirclesAndArrowsToABCAndMoreLOL(true, true, true);
 
-  // fill("white");
-  // stroke("black");
-  // strokeWeight(2);
+  fill("white");
+  stroke("black");
+  strokeWeight(2);
 
-  // rect(
-  //   0,
-  //   height * 8.5 / 11,
-  //   width - 1,
-  //   height * 2.5 / 11 - 1
-  // );
+  rect(
+    0,
+    height * 8.5 / 11,
+    width - 1,
+    height * 2.5 / 11 - 1
+  );
 
-  // textSize(35);
-  // strokeWeight(1);
-  // fill("black");
-  // textWrap(WORD);
-  // textAlign(CENTER);
-  // text(
-  //   `We finished our X! On to the empty box on the right. The x-squared term from your polynomial goes in the first space. Type it in, then press ENTER.`,
-  //   0,
-  //   height * 8.5 / 11,
-  //   width - 1,
-  //   height * 2.5 / 11 - 1
-  // );
+  textSize(28);
+  strokeWeight(1);
+  fill("black");
+  textWrap(WORD);
+  textAlign(CENTER);
+  text(
+    `Great! Now look at the two numbers on the left and right of our X. Those are the coefficients of our two x-terms. Let's plug them in to the two areas of the box shown on the right. They can go in any order. When you're done typing, press ENTER.`,
+    0,
+    height * 8.5 / 11,
+    width - 1,
+    height * 2.5 / 11 - 1
+  );
 
-  // drawTypedValues(true, true, true, true);
+  drawTypedValues(true, true, true, true);
 
-  // // TODO: Make arrow show correctly
-  // topLeftInput.position(width * 6.3 / 11, height * 1.8 / 6 + 2); //Top Left input
-  // topLeftInput.style("font-size", "45px");
-  // topLeftInput.size(width * .65 / 11, height * .8 / 6);
-  // // topLeftInput.style("z-index", "0");
-  // topLeftInput.show();
+  botLeftInput.position(width * 6.3 / 11, height * 3.3 / 6 + 2); //Bot Left input
+  botLeftInput.style("font-size", "45px");
+  botLeftInput.style("border-color", "red");
+  botLeftInput.style("border-style", "solid");
+  botLeftInput.style("border-width", "4px");
+  botLeftInput.size(width * .65 / 11, height * .8 / 6);
+  botLeftInput.show();
 
-  // myTrinomial.drawCirclesAndArrowsToABCAndMoreLOL(false, false, false, true, false)
+  topRightInput.position(width * 8.3 / 11, height * 1.8 / 6 + 2); //Bot Left input
+  topRightInput.style("font-size", "45px");
+  topRightInput.style("border-color", "red");
+  topRightInput.style("border-style", "solid");
+  topRightInput.style("border-width", "4px");
+  topRightInput.size(width * .65 / 11, height * .8 / 6);
+  topRightInput.show();
+
+  drawRedRectanglesAroundLeftAndTermCoefficients();
+
+  // myTrinomial.drawCirclesAndArrowsToABCAndMoreLOL(false, false, false, true, false);
+  // drawBoxAndArrowsF
 
   pop();
 }
 
-//TODO: Make it so that if back button is pressed from 6th screen then x^2 is displayed next to input box.
+function drawEighthScreen() {
+  push();
+
+  hideAllButtonsAndInputs();
+
+  drawXBox();
+  // myTrinomial.drawCirclesAndArrowsToABCAndMoreLOL(true, true, true);
+
+  fill("white");
+  stroke("black");
+  strokeWeight(2);
+
+  rect(
+    0,
+    height * 8.5 / 11,
+    width - 1,
+    height * 2.5 / 11 - 1
+  );
+
+  textSize(45);
+  strokeWeight(1);
+  fill("black");
+  textWrap(WORD);
+  textAlign(CENTER);
+  text(
+    `Noice. Now plug in the constant term of the trinomial into the last area. Then press ENTER.`,
+    0,
+    height * 8.5 / 11,
+    width - 1,
+    height * 2.5 / 11 - 1
+  );
+
+  drawTypedValues(true, true, true, true);
+
+  botRightInput.position(width * 8.3 / 11, height * 3.3 / 6 + 2); //Bot Right input
+  botRightInput.style("font-size", "45px");
+  botRightInput.style("border-color", "red");
+  botRightInput.style("border-style", "solid");
+  botRightInput.style("border-width", "4px");
+  botRightInput.size(width * .65 / 11, height * .8 / 6);
+  botRightInput.show();
+
+  // myTrinomial.drawCirclesAndArrowsToABCAndMoreLOL(false, false, false, true, false);
+  // drawBoxAndArrowsF
+
+  pop();
+}
+
+function drawLittlePlusAndMultSign() {
+  push();
+
+  stroke("red");
+  fill("red");
+  strokeWeight(2);
+  textAlign(CENTER, CENTER);
+  text("+", width * 3 / 11, height * 8.3 / 11);
+  text("x", width * 3 / 11, height * 2.6 / 11);
+
+  pop();
+}
+
+function drawRedRectanglesAroundLeftAndTermCoefficients() {
+  push();
+
+  noFill();
+  stroke("red");
+  strokeWeight(3);
+  rect(width * 1 / 11, height * 4.7 / 11, width * 1 / 11, height * 1.8 / 11);
+  rect(width * 4 / 11, height * 4.7 / 11, width * 1 / 11, height * 1.8 / 11);
+
+  pop();
+}
+
+// TODO: Make it so that if back button is pressed from 6th screen then x^2 is displayed next to input box.
 //TODO: Add an equation.remove() when I need to remove a tex object.
 
 function drawXSquaredInTopLeftBox() {
-  xSquared = createTeX(`x^2`);
-
   xSquared.position(width * 7.1 / 11, height * 3.6 / 11);
   xSquared.size(48);
   // xSquared.size(50, 10);
@@ -427,6 +536,28 @@ function drawXSquaredInTopLeftBox() {
   // console.log(xSquared.position());
   xSquared.style("z-index", "2");
   xSquared.add();
+}
+
+function drawXInBotLeftBox() {
+  x1.position(width * 7.1 / 11, height * 3.6 / 6);
+  x1.size(48);
+  // x1.size(50, 10);
+  x1.stroke(color(`rgb(0, 0, 0)`));
+  x1.fill(color(`rgb(0, 0, 0)`));
+  // console.log(x1.position());
+  x1.style("z-index", "2");
+  x1.add();
+}
+
+function drawXInTopRightBox() {
+  x2.position(width * 9.1 / 11, height * 3.9 / 11);
+  x2.size(48);
+  // x2.size(50, 10);
+  x2.stroke(color(`rgb(0, 0, 0)`));
+  x2.fill(color(`rgb(0, 0, 0)`));
+  // console.log(x2.position());
+  x2.style("z-index", "2");
+  x2.add();
 }
 
 function drawTypedValues(bBoolean, acBoolean, leftBoolean, rightBoolean, topLeftBoolean, topRightBoolean, botLeftBoolean, BotRightBoolean) {
@@ -495,11 +626,15 @@ function unclearRightInput() {
 
 function incrementScreen() {
   // hideAllButtonsAndInputs();
-  // if (currentScreen == "Right Term Adding Screen") incrementStep();
-  // if (currentScreen == "Operation Input Screen") screenIndex--;
-  // else screenIndex++;
-
+  // TODO: Make it so that "b" and "a * c" show up again when you press back and end up on those screens
   screenIndex++;
+}
+
+function decrementScreen() {
+  xSquared.remove();
+  x1.remove();
+  x2.remove();
+  screenIndex--;
 }
 
 function keyPressed() {
@@ -519,7 +654,7 @@ function keyPressed() {
     incrementScreen();
   }
 
-  if ( // TODO: Fix the > -100 to something better and more universal
+  if (
     currentScreen == "drawFifthScreen" && keyCode === ENTER && !isNaN(parseInt(leftInput.value())) && !isNaN(parseInt(rightInput.value()))
   ) {
     leftInputValue = parseInt(leftInput.value());
@@ -530,23 +665,29 @@ function keyPressed() {
     drawXSquaredInTopLeftBox();
   }
 
-  if ( // TODO: Fix the > -100 to something better and more universal
+  if (
     currentScreen == "drawSixthScreen" && keyCode === ENTER && !isNaN(parseInt(topLeftInput.value()))
   ) {
     topLeftInputValue = parseInt(topLeftInput.value());
     topLeftInput.value("");
     // xSquared.remove();
     incrementScreen();
+    drawXInBotLeftBox();
+    drawXInTopRightBox();
   }
 
-  // if (currentScreen == "Operation Input Screen") {
-  //   if (keyCode === 13 && operationInput.value() != "") {
-  //     if (isAddButtonClicked || isSubButtonClicked) addOrSubToBothSides();
-  //     else if (isDivButtonClicked == true) divToBothSides();
-  //     else if (isMultButtonClicked == true) multToBothSides();
-  //     incrementScreen();
-  //   }
-  // }
+  if (
+    currentScreen == "drawSeventhScreen" && keyCode === ENTER && !isNaN(parseInt(topRightInput.value())) && !isNaN(parseInt(botLeftInput.value()))
+  ) {
+    topRightInputValue = parseInt(topRightInput.value());
+    topRightInput.value("");
+    botLeftInputValue = parseInt(botLeftInput.value());
+    botLeftInput.value("");
+    // xSquared.remove();
+    incrementScreen();
+    drawXInBotLeftBox();
+    drawXInTopRightBox();
+  }
 }
 
 function hideAllButtonsAndInputs() {
@@ -571,6 +712,14 @@ function darkenButton() {
 
 function lightenButton() {
   yesButtonColor = color(25, 23, 200, 50);
+}
+
+function darkenBackButton() {
+  backButtonColor = color(25, 23, 200, 75);
+}
+
+function lightenBackButton() {
+  backButtonColor = color(25, 23, 200, 50);
 }
 
 function drawXBox() {

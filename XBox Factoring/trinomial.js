@@ -8,6 +8,7 @@ class Trinomial {
         this.aTimesC = floor(random(-50, 50));
         this.allFactorsOfATimesC;
         this.color = color("black");
+        this.equation;
     }
 
     getRandomABC() {
@@ -54,16 +55,20 @@ class Trinomial {
             secondSign = "-";
         }
 
-        let equation = createTeX(`${this.a}x^2${firstSign}${absValOfB}x${secondSign}${absValOfC}`);
+        this.equation = createTeX(`${this.a}x^2${firstSign}${absValOfB}x${secondSign}${absValOfC}`);
 
-        equation.position(width * 4 / 11, height * 1 / 11);
-        equation.size(48);
-        // equation.size(50, 10);
-        equation.stroke(color(`rgb(${this.color._getRed()}, ${this.color._getGreen()}, ${this.color._getBlue()})`));
-        equation.fill(color(`rgb(${this.color._getRed()}, ${this.color._getGreen()}, ${this.color._getBlue()})`));
-        // console.log(equation.position());
-        equation.style("z-index", "2");
-        equation.add();
+        this.equation.position(width * 4 / 11, height * 1 / 11);
+        this.equation.size(48);
+        // this.equation.size(50, 10);
+        this.equation.stroke(color(`rgb(${this.color._getRed()}, ${this.color._getGreen()}, ${this.color._getBlue()})`));
+        this.equation.fill(color(`rgb(${this.color._getRed()}, ${this.color._getGreen()}, ${this.color._getBlue()})`));
+        // console.log(this.equation.position());
+        this.equation.style("z-index", "2");
+        this.equation.add();
+    }
+
+    hideTrinomial() {
+        this.equation.remove();
     }
 
     drawCirclesAndArrowsToABCAndMoreLOL(aBoolean, bBoolean, cBoolean, aBoolean2, cBoolean2) { // booleans determines if a, b, and c have arrows drawn to them, respectively
