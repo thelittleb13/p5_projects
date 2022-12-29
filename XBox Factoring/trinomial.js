@@ -65,13 +65,16 @@ class Trinomial {
         // console.log(this.equation.position());
         this.equation.style("z-index", "2");
         this.equation.add();
+
+        console.log("Drew Trinomial in trinomial class");
+
     }
 
     hideTrinomial() {
         this.equation.remove();
     }
 
-    drawCirclesAndArrowsToABCAndMoreLOL(aBoolean, bBoolean, cBoolean, aBoolean2, cBoolean2) { // booleans determines if a, b, and c have arrows drawn to them, respectively
+    drawCirclesAndArrowsToABCAndMoreLOL(aBoolean, bBoolean, cBoolean, aBoolean2, cBoolean2) { // booleans determines if a, b, and c should have arrows drawn to them, respectively. aBoolean2 and cBoolean2 are for 
         push();
 
         var numDigitsOfA = 1;
@@ -120,6 +123,17 @@ class Trinomial {
             noFill();
             stroke("red");
             rect(width * 6.23 / 11, height * 3.23 / 11, width * 1.55 / 11, height * 1.77 / 11);
+        }
+
+        if (cBoolean2 === true) {
+            let cInputX = width * 8.6 / 11;
+            let cInputY = height * 3.3 / 6 + 2;
+            cBase.x += width * .95 / 11 + cAdjustment + 50;
+            cBase.y += height * 1.4 / 11;
+            cVector.x = cInputX - cBase.x - 4;
+            cVector.y = cInputY - cBase.y - 4;
+
+            this.drawArrow(cBase, cVector, 'red');
         }
 
         stroke("red");
