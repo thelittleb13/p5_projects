@@ -652,6 +652,7 @@ function drawRedRectanglesAroundFactors(firstTopTermBoolean, secondTopTermBoolea
   pop();
 }
 
+
 function drawTypedValues(bBoolean, acBoolean, leftBoolean, rightBoolean, topLeftBoolean, topRightBoolean, botLeftBoolean, botRightBoolean) {
   push();
 
