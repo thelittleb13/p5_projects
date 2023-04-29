@@ -1,3 +1,5 @@
+// TODO: store positions of rectangles globally and use vectors to determine locations of a, b, and c letters so that it can change dynamically
+
 class Trinomial {
     constructor() {
         this.a;
@@ -6,6 +8,7 @@ class Trinomial {
         this.aTimesC = floor(random(-50, 50));
         this.allFactorsOfATimesC;
         this.color = color("black");
+        this.equation;
     }
 
     getRandomABC() {
@@ -52,19 +55,26 @@ class Trinomial {
             secondSign = "-";
         }
 
-        let equation = createTeX(`${this.a}x^2${firstSign}${absValOfB}x${secondSign}${absValOfC}`);
+        this.equation = createTeX(`${this.a}x^2${firstSign}${absValOfB}x${secondSign}${absValOfC}`);
 
-        equation.position(width * 4 / 11, height * 1 / 11);
-        equation.size(48);
-        // equation.size(50, 10);
-        equation.stroke(color(`rgb(${this.color._getRed()}, ${this.color._getGreen()}, ${this.color._getBlue()})`));
-        equation.fill(color(`rgb(${this.color._getRed()}, ${this.color._getGreen()}, ${this.color._getBlue()})`));
-        // console.log(equation.position());
-        equation.style("z-index", "2");
-        equation.add();
+        this.equation.position(width * 4 / 11, height * 1 / 11);
+        this.equation.size(48);
+        // this.equation.size(50, 10);
+        this.equation.stroke(color(`rgb(${this.color._getRed()}, ${this.color._getGreen()}, ${this.color._getBlue()})`));
+        this.equation.fill(color(`rgb(${this.color._getRed()}, ${this.color._getGreen()}, ${this.color._getBlue()})`));
+        // console.log(this.equation.position());
+        this.equation.style("z-index", "2");
+        this.equation.add();
+
+        console.log("Drew Trinomial in trinomial class");
+
     }
 
-    drawCirclesAndArrowsToABCAndMoreLOL(aBoolean, bBoolean, cBoolean, aBoolean2, cBoolean2) { // booleans determines if a, b, and c have arrows drawn to them, respectively
+    hideTrinomial() {
+        this.equation.remove();
+    }
+
+    drawCirclesAndArrowsToABCAndMoreLOL(aBoolean, bBoolean, cBoolean, aBoolean2, cBoolean2) { // booleans determines if a, b, and c should have arrows drawn to them, respectively. aBoolean2 and cBoolean2 are for 
         push();
 
         var numDigitsOfA = 1;
@@ -89,7 +99,7 @@ class Trinomial {
             rect(width * 4 / 11 - 2, height * 0.9 / 11, width * .3 / 11 + aAdjustment + 50, height * 1 / 11);
         }
 
-        let aBase = createVector(315, 35);
+        let aBase = createVector(width * 3.3 / 11, 35);
         let aVector = createVector(45, 20);
         let bBase = createVector(400 + aAdjustment, 35);
         let bVector = createVector(45, 20);
@@ -113,6 +123,17 @@ class Trinomial {
             noFill();
             stroke("red");
             rect(width * 6.23 / 11, height * 3.23 / 11, width * 1.55 / 11, height * 1.77 / 11);
+        }
+
+        if (cBoolean2 === true) {
+            let cInputX = width * 8.6 / 11;
+            let cInputY = height * 3.3 / 6 + 2;
+            cBase.x += width * .95 / 11 + cAdjustment + 50;
+            cBase.y += height * 1.4 / 11;
+            cVector.x = cInputX - cBase.x - 4;
+            cVector.y = cInputY - cBase.y - 4;
+
+            this.drawArrow(cBase, cVector, 'red');
         }
 
         stroke("red");
