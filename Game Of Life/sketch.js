@@ -10,7 +10,13 @@ function setup() {
 
   startButton = createButton("Start / Stop");
   startButton.position(width + 50, 50);
-  startButton.mousePressed(() => start *= -1);
+  startButton.mousePressed(() => {
+    start *= -1
+    if (start == 1) startButton.style('background-color', color("red"));
+    else if (start == -1) startButton.style('background-color', color("green"));
+  });
+  startButton.style('background-color', color("green"));
+  startButton.style('color', color("white"));
 
   // intialize boxes array as all 0s
   for (var i = 0; i < width / boxWidth; i++) {
