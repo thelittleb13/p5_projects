@@ -10,7 +10,6 @@ let currentLevelP;
 
 // level 2 variables
 
-
 // level 3 variables
 
 
@@ -21,7 +20,6 @@ function setup() {
   level1Button = createButton("Level 1");
   level1Button.mousePressed(() => {
     levelSelector = 1
-    y_pos = 100;
   })
   levelButtonsArray.push(level1Button);
 
@@ -29,7 +27,6 @@ function setup() {
   levelButtonsArray.push(level2Button);
   level2Button.mousePressed(() => {
     levelSelector = 2
-    y_pos = 100;
   })
 
   level3Button = createButton("challenge");
